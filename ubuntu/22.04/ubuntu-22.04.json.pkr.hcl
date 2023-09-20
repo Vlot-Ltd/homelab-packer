@@ -183,4 +183,37 @@ build {
       "sudo cloud-init clean"
     ]
   }
+
+  provisioner "shell" {
+    environment_vars = [
+      "TEMPLATE=${var.template_name}"
+    ]
+    inline = [
+      "echo $(date +%Y%m%d-%H%M%S)-$TEMPLATE > /home/proxmox/packer.build"
+    ]
+  }
+
+  provisioner "file" {
+    source = "ubuntu/22.04/scripts/hardening.sh"
+    destination = "~/packer-hardening.sh"
+  }
+
+  provisioner "shell" {
+    inline = [
+      "sudo bash ~/packer-hardening.sh"
+    ]
+  }
+
+  provisioner "shell" {
+    environment_vars = [
+      "CHEF_LICENSE=accept-silent"
+    ]
+    inline = [
+      "curl https://omnitruck.chef.io/install.sh | sudo bash -s -- -P inspec",
+      "cd ~",
+      "git clone https://github.com/dev-sec/linux-baseline.git",
+      "inspec exec linux-baseline --reporter=cli json:packer_$(hostname)_$(date +%Y%m%d_%H%M%S)_inspec.json"
+    ]
+    valid_exit_codes = [ 0, 100]
+  }
 }

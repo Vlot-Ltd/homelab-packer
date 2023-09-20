@@ -1,3 +1,11 @@
+## [0.0.5](https://github.com/Vlot-Ltd/homelab) - 20230920
+
+
+### Changed
+
+- Added inspec and basic hardening script to Ubuntu 22.04 build [#04_template_build](https://github.com/Vlot-Ltd/homelab/issues/04_template_build)
+
+
 ## [0.0.2](https://github.com/Vlot-Ltd/homelab) - 20230911
 
 
