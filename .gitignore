@@ -17,4 +17,4 @@ crash.log
 
 inspec_logs/
 .hcppacker.env
-ubuntu-22.04-static.json.pkr.hcl
+ubuntu/22.04/ubuntu-22.04.json.pkr.hcl
