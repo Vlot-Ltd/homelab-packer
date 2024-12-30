@@ -1,0 +1,19 @@
+#cloud-config
+autoinstall:
+  version: 1
+  identity:
+    hostname: tpl-ubuntu-2404
+    username: proxmox
+    password: "$6$.VBz4.cvtp/M1Mat$IwEkrvCEzYy6WAuFzsQOttiJ.yhuS2B0EcVaUrYeh0q6JDDWayzM7.em0kc4CmWM0FHpL1iCvwd5GJRKTb/AT0"
+  keyboard: {layout: gb, toggle: null, variant: ''}
+  locale: en_GB.UTF-8
+  ssh:
+    install-server: true
+    allow-pw: true
+  package-update: true
+  package-upgrade: true
+  packages:
+    - qemu-guest-agent
+    - auditd
+  late-commands:
+    - echo 'proxmox ALL=(ALL) NOPASSWD:ALL' > /target/etc/sudoers.d/proxmox
