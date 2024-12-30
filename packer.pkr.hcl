@@ -47,7 +47,7 @@ variable "ssh_username" {
     sensitive   = true
 }
 
-variables "vm_cores" {
+variable "vm_cores" {
     type        = string
     description = "Number of CPU cores"
     default     = "1"
