@@ -145,6 +145,12 @@ locals {
 
 source "proxmox-iso" "ubuntu-2204" {
   boot_command            = ["c", "linux /casper/vmlinuz --- autoinstall ds='nocloud-net;s=http://{{ .HTTPIP }}:{{ .HTTPPort }}/' ", "<enter><wait>", "initrd /casper/initrd<enter><wait>", "boot<enter>"]
+  boot_iso {
+    type         = "scsi"
+    iso_file     = "${local.iso_filename_2204}"
+    unmount      = true
+    iso_checksum = "${local.iso_checksum_2204}"
+  }
   boot_wait               = "10s"
   cloud_init              = true
   cloud_init_storage_pool = "${var.vm_storage_pool}"
@@ -158,8 +164,6 @@ source "proxmox-iso" "ubuntu-2204" {
   }
   http_directory           = "${local.http_directory_2204}"
   insecure_skip_tls_verify = true
-  iso_checksum             = "${local.iso_checksum_2204}"
-  iso_file                 = "${local.iso_filename_2204}"
   memory                   = "${var.vm_memory}"
   network_adapters {
     bridge = "${var.vm_network_adapter_bridge}"
@@ -177,13 +181,18 @@ source "proxmox-iso" "ubuntu-2204" {
   template_description = "${local.template_des_2204}"
   template_name        = "${local.template_name_2204}"
   token                = "${var.proxmox_token}"
-  unmount_iso          = true
   username             = "${var.proxmox_user}"
   vm_id                = "${local.proxmox_vmid_2204}"
 }
 
 source "proxmox-iso" "ubuntu-2404" {
   boot_command            = ["c", "linux /casper/vmlinuz --- autoinstall ds='nocloud-net;s=http://{{ .HTTPIP }}:{{ .HTTPPort }}/' ", "<enter><wait>", "initrd /casper/initrd<enter><wait>", "boot<enter>"]
+  boot_iso {
+    type         = "scsi"
+    iso_file     = "${local.iso_filename_2404}"
+    unmount      = true
+    iso_checksum = "${local.iso_checksum_2404}"
+  }
   boot_wait               = "10s"
   cloud_init              = true
   cloud_init_storage_pool = "${var.vm_storage_pool}"
@@ -197,8 +206,6 @@ source "proxmox-iso" "ubuntu-2404" {
   }
   http_directory           = "${local.http_directory_2404}"
   insecure_skip_tls_verify = true
-  iso_checksum             = "${local.iso_checksum_2404}"
-  iso_file                 = "${local.iso_filename_2404}"
   memory                   = "${var.vm_memory}"
   network_adapters {
     bridge = "${var.vm_network_adapter_bridge}"
@@ -216,7 +223,6 @@ source "proxmox-iso" "ubuntu-2404" {
   template_description = "${local.template_des_2404}"
   template_name        = "${local.template_name_2404}"
   token                = "${var.proxmox_token}"
-  unmount_iso          = true
   username             = "${var.proxmox_user}"
   vm_id                = "${local.proxmox_vmid_2404}"
 }
@@ -242,7 +248,7 @@ build {
 
   provisioner "shell" {
     environment_vars = [
-      "TEMPLATE=${source.template_name}"
+      "TEMPLATE=${local.build_version}-${local.build_date}-${local.build_by}"
     ]
     inline = [
       "echo $(date +%Y%m%d-%H%M%S)-$TEMPLATE > /home/proxmox/packer.build"
