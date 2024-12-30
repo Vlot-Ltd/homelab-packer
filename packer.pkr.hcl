@@ -53,7 +53,7 @@ variable "vm_cores" {
     default     = "1"
 }
 
-variable "cpu_type" {
+variable "vm_cpu_type" {
     type        = string
     description = "CPU type"
     default     = "host"
@@ -223,13 +223,10 @@ source "proxmox-iso" "ubuntu-2404" {
 
 build {
   
-  source "source.proxmox-iso.ubuntu-2204" {
-    tplname     = "${local.template_name_2204}"
-  }
-
-  source "source.proxmox-iso.ubuntu-2404" {
-    tplname     = "${local.template_name_2404}"
-  }
+  sources = [
+    "source.proxmox-iso.ubuntu-2204",
+    "source.proxmox-iso.ubuntu-2404",
+  ]
 
   provisioner "shell" {
     inline = ["while [ ! -f /var/lib/cloud/instance/boot-finished ]; do echo 'Waiting for cloud-init...'; sleep 1; done"]
@@ -245,7 +242,7 @@ build {
 
   provisioner "shell" {
     environment_vars = [
-      "TEMPLATE=${source.tplmame}"
+      "TEMPLATE=${source.template_name}"
     ]
     inline = [
       "echo $(date +%Y%m%d-%H%M%S)-$TEMPLATE > /home/proxmox/packer.build"
