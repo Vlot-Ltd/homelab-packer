@@ -116,15 +116,11 @@ source "proxmox-iso" "ubuntu-2404" {
 build {
   
   source "source.proxmox-iso.ubuntu-2204" {
-    description   = "Ubuntu 22.04 Proxmox template (packer generated)"
-    name          = "homelab-ubuntu-2204"
-    template_name = "${local.template_name_2204}"
+    tplname     = "${local.template_name_2204}"
   }
 
   source "source.proxmox-iso.ubuntu-2404" {
-    description   = "Ubuntu 24.04 Proxmox template (packer generated)"
-    name          = "homelab-ubuntu-2404"
-    template_name = "${local.template_name_2404}"
+    tplname     = "${local.template_name_2404}"
   }
 
   provisioner "shell" {
@@ -141,7 +137,7 @@ build {
 
   provisioner "shell" {
     environment_vars = [
-      "TEMPLATE=${source.template_name}"
+      "TEMPLATE=${source.tplmame}"
     ]
     inline = [
       "echo $(date +%Y%m%d-%H%M%S)-$TEMPLATE > /home/proxmox/packer.build"
