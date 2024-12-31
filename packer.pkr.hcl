@@ -247,11 +247,8 @@ build {
   }
 
   provisioner "shell" {
-    environment_vars = [
-      "TEMPLATE=${local.build_version}-${local.build_date}-${local.build_by}"
-    ]
     inline = [
-      "echo $(date +%Y%m%d-%H%M%S)-$TEMPLATE > /home/proxmox/packer.build"
+      "echo $(date +%Y%m%d-%H%M%S) > /home/proxmox/packer.build"
     ]
   }
 
